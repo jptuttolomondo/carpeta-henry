@@ -1,40 +1,90 @@
 'use strict'
-// Las funciones nFactoria y nFibonacci deben resolverlas
-// usando recursión. Una vez realizadas de esa forma pueden probar hacerlas
-// de forma iterativa pero esto último no es obligatorio.
+// resolve estos ejercicios usando recursión
+// hbjhhjk
+// lkñoi
+// ljñliñ
 
-function nFactorial(n) {
-  // devolvé el factorial de n (n!)
-  // ej:clear
-  // el factorial de 3 es 6 (3 * 2 * 1)node
-  if(n<0)return  "error"
-  if(n<2) return 1
-  return n* nFactorial(n-1)
+// Binary Seach Tree
+// 'tiene metodos llamados `insert`, `contains`, `depthFirstForEach`, 'breadthFirstForEach' y 'size'
+// corre depth-first (en recorrido "in-order") cuando depthFirstForEach() es ejecutado sin ninguna opcion o con la opcion "in-order
+// corre depth-first (en recorrido "pre-order") cuando depthFirstForEach() es ejecutado con la opcion "pre-order"
+// corre depth-first (en recorrido "post-order" cuando depthFirstForEach() es ejecutado con la opcion "post-order"
+// corre breadth-first cuando breadthFirstForEach() es ejecutado
+// Observar imagen de la carpeta "homework" llamada "bst.png". Allí encontraran dibujado el arbol utilizado para los tests
+
+
+
+function BinarySearchTree(dato) {
+
+    this.value=dato;
+    this.left=null;
+    this.right=null;
+    
 }
 
-function nFibonacci(n) {
-  // Secuencia de Fibonacci: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,…
-  // Retorna el enésimo numero de la serie
-  // nFibonacci(0) // 0  // el elemento 0 es cero
-  // nFibonacci(1) // 1 // el elemento 1 es 1
-  // nFibonacci(6) // 1 // el elemento 6 es 8
-  if (n<0) return "error"
-  if (n===0)return 0
-  if(n===1)return 1
-  return nFibonacci(n-2)+nFibonacci(n-1)
+
+
+BinarySearchTree.prototype.insert=function (dato){
+  var nuevoArbol= new BinarySearchTree (dato);
+  if(dato<this.value){
+                    if(this.left===null)this.left=nuevoArbol
+                    else this.left.insert(dato)
+                     }
+  else { if(this.right===null)this.right=nuevoArbol
+                  else this.right.insert(dato)
+  }
 
 }
+BinarySearchTree.prototype.contains=function(dato){
+  
+  if(this.value === dato){
+		return true;}
+else{
+	
+	      if(dato <= this.value && this.left !== null){
+	      	return this.left.contains(dato);
+	        }else if(dato > this.value && this.right !== null){
+		    return this.right.contains(dato)
+	  }
+ return false }
+  
+}
+BinarySearchTree.prototype.breadthFirstForEach = function (cb, array = [] ){
 
-// Para esta parte no es necesario utilizar recursión.
-// Implementa la clase Queue que debe contener los siguientes métodos:
-// enqueue: Agrega un valor a la queue. Respeta el orden existente.
-// dequeue: Remueve un valor de la queue. Obedece a FIFO y respeta el underflow (devuelve undefined cuando la queue tiene size cero, o sea, cuando no tiene ningún elemento).
-// size: Devuelve el número de elementos que contiene la queue.
+  cb(this.value);
+this.left && array.push(this.left);
+this.right && array.push(this.right);
+array.length && array.shift().breadthFirstForEach(cb,array);
+}
+BinarySearchTree.prototype.size=function(){
+if(!this.left&&!this.right)return 1
+if(!this.left&&this.right)return 1+ this.right.size()
+if(this.left&&!this.right)return 1+this.left.size()
+if(this.left&&this.right)return 1 +this.left.size()+ this.right.size()
 
-function  Queue () {this.array = []}  
-Queue.prototype.enqueue   =   function  (argu)  {return   this.array.push  (argu);  }  
-Queue.prototype.dequeue   =   function  (argu)  {  return  this.array.shift  (argu);  }  
-Queue.prototype.size   =   function()  {  return  this.array.length;} 
+}
+BinarySearchTree.prototype.depthFirstForEach=function(cb,order){
+if(order==="in-order"||order===undefined){
+
+  this.left&&this.left.depthFirstForEach(cb,order)  
+   cb(this.value);
+   this.right&&this.right.depthFirstForEach(cb,order)
+}
+
+if(order==="pre-order"){  
+  cb(this.value);
+  this.left&&this.left.depthFirstForEach(cb,order)
+  this.right&&this.right.depthFirstForEach(cb,order)
+}
+if(order==="post-order"){  
+  
+  this.left&&this.left.depthFirstForEach(cb,order)
+  this.right&&this.right.depthFirstForEach(cb,order)
+  cb(this.value);
+}
+}
+
+
 
 
 
@@ -42,7 +92,5 @@ Queue.prototype.size   =   function()  {  return  this.array.length;}
 // --------------------------------
 
 module.exports = {
-  Queue,
-  nFactorial,
-  nFibonacci
+  BinarySearchTree
 };
